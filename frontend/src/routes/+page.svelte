@@ -148,9 +148,10 @@ export function sendSocketIOMessage(msg) {
 // import gridHelp from "../../components/svelte-grid/utils/helper.js";
 // import { openSource } from "./github.js";
 
-const COLS = 6;
-
+const COLS = 7;
+let idc = 0
 const id = () => "_" + Math.random().toString(36).substr(2, 9);
+// const id = () => "_"+ idc.toString();
 
 const randomNumberInRange = (min, max) => Math.random() * (max - min) + min;
 
@@ -159,28 +160,31 @@ let items = [
     [COLS]: gridHelp.item({
       x: 0,
       y: 0,
-      w: 2,
-      h: 2,
+      w: 1,
+      h: 1,
     }),
     id: id(),
+	name:1
   },
 
   {
     [COLS]: gridHelp.item({
       x: 2,
       y: 0,
-      w: 2,
-      h: 2,
+      w: 1,
+      h: 1,
     }),
     id: id(),
+	name:2
   },
 ];
 
-const cols = [[1100, 6]];
+let cols = [[1100, COLS]];
 
 function add() {
   let newItem = {
-    6: gridHelp.item({
+    [COLS]: gridHelp.item({
+	title: 'Care',
       w: Math.round(randomNumberInRange(1, 4)),
       h: Math.round(randomNumberInRange(1, 4)),
       x: 0,
@@ -203,19 +207,27 @@ function add() {
 }
 
 const addAt = () => {
+  let newid = id();
   let newItem = {
-    6: gridHelp.item({
-      w: Math.round(randomNumberInRange(1, 4)),
-      h: Math.round(randomNumberInRange(1, 4)),
-      x: 0,
-      y: 0,
+    [COLS]: gridHelp.item({
+    //   w: Math.round(randomNumberInRange(1, 4)),
+    //   h: Math.round(randomNumberInRange(1, 4)),
+      w: 1,
+      h: 1,
+      x: 2,
+      y: 1,
     }),
-    id: id(),
+    id: newid,
+	name: (items.length+1).toString()
   };
 
-  items = [...[newItem], ...items];
-
   items = gridHelp.adjust(items, COLS);
+//   items = [ ...items,...[newItem]];
+//   let mid = Math.floor(items.length/2)
+  let mid = Math.min(items.length,17)
+  items = [...items.slice(0,mid),...[newItem], ...items.slice(mid,items.length)];
+  items = gridHelp.adjust(items, COLS);
+
 };
 
 const remove = (item) => {
@@ -226,7 +238,7 @@ const remove = (item) => {
   }
 };
 
-let adjustAfterRemove = false;
+let adjustAfterRemove = true;
 </script>
 
 <svelte:head>
@@ -241,27 +253,43 @@ let adjustAfterRemove = false;
 
 
 
+<boxes>
 
-<button on:click={add}>Add (random size)</button>
-<button on:click={addAt}>Add random (x=0,y=0)</button>
-<label>
-  <input type="checkbox" bind:checked={adjustAfterRemove} />
-  Adjust elements after removing an item
-</label>
+	<button on:click={add}>Add (random size)</button>
+	<button on:click={addAt}>Add random (x=0,y=0)</button>
+	<label>
+	  <input type="checkbox" bind:checked={adjustAfterRemove} />
+	  Adjust elements after removing an item
+	</label>
+	
+	<div class=demo-container>
+	  <Grid bind:items={items} rowHeight={100} let:item let:dataItem {cols}>
+		<div class=demo-widget>
+		  <span on:pointerdown={e => e.stopPropagation()}
+			on:click={() => remove(dataItem)}
+			class=remove
+			>
+			✕
+		  </span>	
+		  <!-- <p>{dataItem.id}</p> -->
+		  <section>
 
-<div class=demo-container>
-  <Grid bind:items={items} rowHeight={100} let:item let:dataItem {cols}>
-    <div class=demo-widget>
-      <span on:pointerdown={e => e.stopPropagation()}
-        on:click={() => remove(dataItem)}
-        class=remove
-        >
-        ✕
-      </span>
-      <p>{dataItem.id}</p>
-    </div>
-  </Grid>
-</div>
+			  <!-- <div>{ dataItem.data.itemConfig }</div> -->
+			  {#if dataItem.name == "11" }
+			  <p>
+				  <label on:click={addAt}>+</label>
+			  </p>
+			  {:else}
+			  <p>{dataItem.name}</p>
+			{/if}
+			
+			
+			  
+			</section>
+		</div>
+	  </Grid>
+	</div>
+</boxes>
 
 
 
@@ -358,6 +386,25 @@ let adjustAfterRemove = false;
 	h1 {
 		width: 100%;
 	}
+	:global(.svlt-grid-shadow) {
+    /* Back shadow */
+    background: pink;
+	
+  }
+  :global(.svlt-grid-item) {
+    /* Back shadow */
+    /* background: #aaa; */
+	background-image: linear-gradient(rgb(145, 168, 243),rgb(255, 5, 201));  
+}
+  :global(.svlt-grid-container) {
+    /* Container color */
+    background: #eee;
+  }
+  :global(.svlt-grid-resizer::after) {
+    /* Resizer color */
+    border-color: white !important;
+  }
+	.boxes { width:1500}
 	/* For welcome image */
 /* 
 	.welcome {
