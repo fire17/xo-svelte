@@ -24,6 +24,7 @@
 	"type": "module",
 	"dependencies": {
 		"socket.io": "^4.7.1",
-		"socket.io-client": "^4.7.1"
+		"socket.io-client": "^4.7.1",
+		"svelte-canvas": "^0.9.3"
 	}
 }

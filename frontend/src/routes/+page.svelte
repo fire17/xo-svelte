@@ -211,6 +211,7 @@ export function sendSocketIOMessage(msg) {
 		
 </section>
 
+
 <style>
 	section {
 		display: flex;
