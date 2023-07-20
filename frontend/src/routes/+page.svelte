@@ -149,7 +149,7 @@ export function sendSocketIOMessage(msg) {
 // import { openSource } from "./github.js";
 
 const COLS = 7;
-let idc = 0
+let idc = 0 ;
 const id = () => "_" + Math.random().toString(36).substr(2, 9);
 // const id = () => "_"+ idc.toString();
 
@@ -158,13 +158,15 @@ const randomNumberInRange = (min, max) => Math.random() * (max - min) + min;
 let items = [
   {
     [COLS]: gridHelp.item({
-      x: 0,
-      y: 0,
+      x: 3,
+      y: 1,
       w: 1,
       h: 1,
+	  fixed:true,
+	  draggable:false
     }),
     id: id(),
-	name:1
+	name:11
   },
 
   {
@@ -206,27 +208,45 @@ function add() {
   items = [...items, ...[newItem]];
 }
 
+
+let dynamic;
+
 const addAt = () => {
   let newid = id();
+  let name =  (items.length+1).toString()
   let newItem = {
     [COLS]: gridHelp.item({
     //   w: Math.round(randomNumberInRange(1, 4)),
     //   h: Math.round(randomNumberInRange(1, 4)),
       w: 1,
       h: 1,
-      x: 2,
+      x: 3,
       y: 1,
+	  fixed:name == "11",
+	  draggable:name != "11"
     }),
     id: newid,
-	name: (items.length+1).toString()
+	name:name,
   };
+if(newItem.name == "11"){
+	dynamic = newItem
+}
 
-  items = gridHelp.adjust(items, COLS);
+items = gridHelp.adjust(items, COLS);
 //   items = [ ...items,...[newItem]];
 //   let mid = Math.floor(items.length/2)
-  let mid = Math.min(items.length,17)
-  items = [...items.slice(0,mid),...[newItem], ...items.slice(mid,items.length)];
-  items = gridHelp.adjust(items, COLS);
+let mid = Math.min(items.length,17)
+items = [...items.slice(0,mid),...[newItem], ...items.slice(mid,items.length)];
+items = gridHelp.adjust(items, COLS);
+if (dynamic != null){
+	dynamic[COLS].x = 3
+	dynamic[COLS].y = 2
+}
+newItem[COLS].x = 3
+newItem[COLS].y = 1
+items[0][COLS].x = 3
+items[0][COLS].y = 1
+//   items = [...items.slice(0,mid),...[newItem],gridHelp.adjust(items.slice(mid,items.length), COLS)];
 
 };
 
@@ -250,6 +270,16 @@ let adjustAfterRemove = true;
 
 
 
+<h1>
+		<!-- <span class="welcome">
+			<picture>
+				<source srcset={welcome} type="image/webp" />
+				<img src={welcome_fallback} alt="Welcome" />
+			</picture>
+		</span> -->
+
+		Welcome! to your new<br />XO-Svelte app
+	</h1>
 
 
 
@@ -312,16 +342,6 @@ let adjustAfterRemove = true;
 
 
 
-<h1>
-		<!-- <span class="welcome">
-			<picture>
-				<source srcset={welcome} type="image/webp" />
-				<img src={welcome_fallback} alt="Welcome" />
-			</picture>
-		</span> -->
-
-		Welcome! to your new<br />XO-Svelte app
-	</h1>
 <!-- 
 	<h2>
 		try editing <strong>src/routes/+page.svelte</strong>
