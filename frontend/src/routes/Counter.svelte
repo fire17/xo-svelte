@@ -3,7 +3,10 @@
 	import { spring } from 'svelte/motion';
 	// import { xo } from "./xo.js"
 	// import { xo } from "./+page.svelte"
-	import {  _datavar , _xo} from "./+page.js";
+	// import {  _datavar , _xo} from "./+page.js";
+	import {  _datavar, _socket , _xo} from "./+page.js";
+	// let xo = _xo
+	let socket = _socket
 	console.log("#########@@@@@@@@@$$$$$$$$$$$$$$$$$$$$$$$",_datavar)
 	// import {  _socket , _xo} from "./+page.js";
 	// export let count = 111
@@ -62,7 +65,14 @@
 		</svg>
 	</button> -->
 	<button  
-	on:click={() => (xo.count._value = (parseInt(xo.count._value)-1||0))} aria-label="Decrease the counter by one">
+	on:click={() => 
+	{
+		(xo.count._value = (parseInt(xo.count._value)-1||0));
+		console.log(":::::::::::::::::::::::::::::-");
+		socket.emit('count_update', xo.count._value);
+		console.log(":::::::::::::::::::::::::::::-")
+	}
+	} aria-label="Decrease the counter by one">
 		<svg aria-hidden="true" viewBox="0 0 1 1">
 			<path d="M0,0.5 L1,0.5" />
 		</svg>
@@ -86,7 +96,14 @@
 			<path d="M0,0.5 L1,0.5 M0.5,0 L0.5,1" />
 		</svg>
 	</button> -->
-	<button on:click={() => (xo.count._value = (parseInt(xo.count._value)+1||0))} aria-label="Increase the counter by one">
+	<button on:click={() => 
+	{
+		(xo.count._value = (parseInt(xo.count._value)+1||0));
+		console.log(":::::::::::::::::::::::::::::+")
+		socket.emit('count_update', xo.count._value);
+		console.log(":::::::::::::::::::::::::::::+")
+	}
+	} aria-label="Increase the counter by one">
 		<svg aria-hidden="true" viewBox="0 0 1 1">
 			<path d="M0,0.5 L1,0.5 M0.5,0 L0.5,1" />
 		</svg>

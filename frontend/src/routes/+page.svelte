@@ -97,12 +97,21 @@
     });
 // socketIoHandler.js
 
+export function onCountChanges(msg) {
+	// xo.input_count._value = xo.input_count._value + 1
+	// _datavar = msg
+	console.log(":::::::::::::::::::::::::::::")
+	socket.emit('count_update', msg);
+	console.log(":::::::::::::::::::::::::::::")
+}
+
 export function onChanges(msg) {
 	xo.input_count._value = xo.input_count._value + 1
 	// _datavar = msg
 	console.log(":::::::::::::::::::::::::::::")
 	socket.emit('user_msg', msg);
 	console.log(":::::::::::::::::::::::::::::")
+	
 }
 export function sendSocketIOMessage(msg) {
 	console.log(":::::::::::::::::::::::::::::")
@@ -282,7 +291,7 @@ let adjustAfterRemove = true;
 	</h1>
 
 
-
+<!-- 
 <boxes>
 
 	<button on:click={add}>Add (random size)</button>
@@ -301,10 +310,10 @@ let adjustAfterRemove = true;
 			>
 			✕
 		  </span>	
-		  <!-- <p>{dataItem.id}</p> -->
+		  <!- <p>{dataItem.id}</p> ->
 		  <section>
 
-			  <!-- <div>{ dataItem.data.itemConfig }</div> -->
+			  <!- <div>{ dataItem.data.itemConfig }</div> ->
 			  {#if dataItem.name == "11" }
 			  <p>
 				  <label on:click={addAt}>+</label>
@@ -319,7 +328,7 @@ let adjustAfterRemove = true;
 		</div>
 	  </Grid>
 	</div>
-</boxes>
+</boxes> -->
 
 
 
@@ -360,7 +369,11 @@ let adjustAfterRemove = true;
 	<div>
 
 		Edit Counter  : <input bind:value={xo.count._value}  
-		on:input={() => xo.count._value = (isNaN(parseInt(xo.count._value)) ? 0 : parseInt(xo.count._value))}
+		on:input={() => {
+			xo.count._value = (isNaN(parseInt(xo.count._value)) ? 0 : parseInt(xo.count._value));
+			onCountChanges(xo.count._value)
+			}
+		}
 	/>
 	</div>
 

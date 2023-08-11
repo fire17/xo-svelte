@@ -42,7 +42,9 @@ if withOAuth:
 
          
 
-redis = xoRedis()
+# redis = lo = xoRedis(host="localhost",port=6379)
+# redis = xoRedis("demo",host='wise-coyote-46085.upstash.io',port=46085,password='7fdf57fde49e4eadb7a260d0e38230a2',ssl=True)
+redis = xoRedis("demo",host='ethical-monarch-46113.upstash.io',port=46113,password='7a984cbd2d4b408e8d84c4c44deea3c5',ssl=True)
 port = 5000
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
@@ -63,6 +65,18 @@ def on_connect():
 def on_disconnect():
     print('A user disconnected', request.sid) # type: ignore
 
+@socketio.on('count_update')
+def on_count_update(message):
+    print(f'CCCCCCCCCC Received message: {message}')
+
+    # Send message back to the client that initiated the event
+    # redis.sessions[request.sid].message = message
+    print(":::",request.__dir__)
+    # emit('server_update', {"data":message+"!","message":message+"@@"}, room = request.sid)
+    # emit('server_update', {"data":{"_value":"{'Server Recieved': {message:'"+message+"'}}","extra":{"_value":"inner_data","meta":{}}},"message":str(message)+"!"}, room = request.sid)  # type: ignore
+    redis.count = int(message)
+    print(":::",request.sid)  # type: ignore
+
 @socketio.on('user_msg')
 def on_send_message(message):
     print(f'Received message: {message}')
@@ -72,6 +86,7 @@ def on_send_message(message):
     print(":::",request.__dir__)
     # emit('server_update', {"data":message+"!","message":message+"@@"}, room = request.sid)
     emit('server_update', {"data":{"_value":"{'Server Recieved': {message:'"+message+"'}}","extra":{"_value":"inner_data","meta":{}}},"message":str(message)+"!"}, room = request.sid)  # type: ignore
+    redis.msg = message
     print(":::",request.sid)  # type: ignore
     # print(xo)
     # redis.lastSession = request.sid
@@ -79,6 +94,7 @@ def on_send_message(message):
     # send('server_update', message+"!", room=request.sid)
 
 # redis.trigger.on = "off"
+redis.trigger.on = "on"
 
 # @socketio.on('disconnect')
 def manualCount(*v,**kw):
@@ -98,7 +114,7 @@ def manual(*v,**kw):
         print("done emmiting to", redis.lastSession.value )  # type: ignore
     else:
         print("....",redis.trigger.on.value, type(redis.trigger.on.value), redis.trigger.on.value == "on")  # type: ignore
-        if redis.trigger.on.value == "on":  # type: ignore
+        if redis.trigger.on.value == "on" or True:  # type: ignore
             print("YYYYYY")
             print("Running manual",v, kw)
             room = redis.lastSession.value  # type: ignore
