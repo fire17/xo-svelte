@@ -6,7 +6,7 @@ from xo.redis import xoRedis
 # import eventlet
 # from eventlet import wsgi
 # eventlet.monkey_patch()
-withOAuth = True
+withOAuth = False
 
 if withOAuth:
     from flask import Flask, redirect, url_for                                                                                                                                               
@@ -48,7 +48,8 @@ redis = xoRedis("demo",host='ethical-monarch-46113.upstash.io',port=46113,passwo
 port = 5000
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
-socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080','http://localhost:5173','http://localhost:4173'],async_mode='threading')
+# socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080','http://localhost:5173','http://localhost:4173'],async_mode='threading')
+socketio = SocketIO(app, cors_allowed_origins=['*'],async_mode='threading')
 
 redis.count = 11
 
