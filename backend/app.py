@@ -50,11 +50,11 @@ if withOAuth:
 # redis = xoRedis("demo",host='wise-coyote-46085.upstash.io',port=46085,password='7fdf57fde49e4eadb7a260d0e38230a2',ssl=True)
 redis = xoRedis("demo",host='ethical-monarch-46113.upstash.io',port=46113,password='7a984cbd2d4b408e8d84c4c44deea3c5',ssl=True)
 port = 5000
-port = 8080
+# port = 8080
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret!'
 # socketio = SocketIO(app, cors_allowed_origins=['http://localhost:8080','http://localhost:5173','http://localhost:4173'],async_mode='threading')
-socketio = SocketIO(app, cors_allowed_origins=['*'],async_mode='threading')
+socketio = SocketIO(app, cors_allowed_origins='*',async_mode='threading')
 
 redis.count = 11
 
