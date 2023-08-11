@@ -114,7 +114,7 @@ def manual(*v,**kw):
     print("!!!!!!!!!!!!!!",v, kw)
     redis.trigger.on.value  # type: ignore
     print("starting manual", str(redis.tigger.on.value), str(redis.tigger.on) == "on")  # type: ignore
-    if str(redis.tigger.on.value) == "on":  # type: ignore
+    if str(redis.tigger.on.value) == "on" and False:  # type: ignore
         print("Running manual",v, kw)
         emit('server_update', {"data":v}, to = redis.lastSession.value)  # type: ignore
         print("done emmiting to", redis.lastSession.value )  # type: ignore

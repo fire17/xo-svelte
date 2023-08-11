@@ -5,6 +5,7 @@ export let _datavar = "Svelte"
 
 import io from 'socket.io-client';
 export let _socket = io('http://127.0.0.1:5000');
+// export let _socket = io('dolphin-app-z2bkp.ondigitalocean.app:5000');
 import { _exp } from './xo'
 export let _xo  = _exp("svelte", "Awesome!")
 
