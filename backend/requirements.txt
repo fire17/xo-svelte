@@ -4,3 +4,4 @@ xo.redis
 simple-websocket
 gunicorn
 eventlet
+gevent-websocket

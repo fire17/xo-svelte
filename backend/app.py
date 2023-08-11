@@ -1,5 +1,5 @@
-import eventlet
-eventlet.monkey_patch()
+# import eventlet
+# eventlet.monkey_patch()
 
 
 import time
@@ -152,6 +152,7 @@ redis.count @= lambda *v, **kw : manualCount(*v,**kw) # type: ignore
 
 
 if __name__ == '__main__':
+    import argparse
     socketio.run(app, host='0.0.0.0', port=port, debug=True)
     # socketio.run(app, debug=True)
     # wsgi.server(eventlet.listen(('0.0.0.0', port)), app)
